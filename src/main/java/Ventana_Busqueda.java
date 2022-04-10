@@ -88,6 +88,9 @@ public class Ventana_Busqueda {
         tabla.setModel(modelo);
     }
 
+    /**
+     * Método para limpiar la interfaz gráfica
+     */
     private void limpiarInterfaz(){
         tiempo.setText("0");
         posicion.setText("0");
