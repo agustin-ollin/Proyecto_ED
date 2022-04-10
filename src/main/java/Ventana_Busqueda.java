@@ -166,6 +166,7 @@ public class Ventana_Busqueda {
             if (tablaImportar.getRowCount() != 0 && !textFieldNombreArchivo.getText().equals("")){
                 importarArchivo();
                 limpiarInterfaz();
+                modeloImport.setRowCount(0);
             } else {
                 generar_MensajesError("No se han agregado datos a la tabla");
             }
