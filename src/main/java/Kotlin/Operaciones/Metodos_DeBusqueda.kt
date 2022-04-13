@@ -1,5 +1,6 @@
 package Kotlin.Operaciones
 
+import Kotlin.People
 import Kotlin.Persona
 import kotlin.system.measureNanoTime
 
@@ -16,8 +17,8 @@ var tiempo = 0L
 /**
  * Método para calcular el tiempo que tarda en realizar la búsqueda Binaria, retorna a la persona que coincida con el nombre a buscar
  */
-fun tiempo_Busqueda_Binaria(nombre: String, lista: MutableList<Persona>): Persona {
-    var resultado: Persona
+fun tiempo_Busqueda_Binaria(nombre: String, lista: MutableList<People>): People {
+    var resultado: People
     tiempo = measureNanoTime {
         resultado = busqueda_Binaria(nombre, lista)!!
     }
@@ -28,8 +29,8 @@ fun tiempo_Busqueda_Binaria(nombre: String, lista: MutableList<Persona>): Person
 /**
  * Método para calcular el tiempo que tarda en realizar la búsqueda Lineal, retorna a la persona que coincida con el nombre a buscar
  */
-fun tiempo_Busqueda_Lineal(nombre: String, lista: MutableList<Persona>): Persona {
-    var resultado: Persona
+fun tiempo_Busqueda_Lineal(nombre: String, lista: MutableList<People>): People {
+    var resultado: People
     tiempo = measureNanoTime {
         resultado = busqueda_Lineal(nombre, lista)!!
     }
@@ -40,8 +41,8 @@ fun tiempo_Busqueda_Lineal(nombre: String, lista: MutableList<Persona>): Persona
 /**
  * Método para calcular el tiempo que se tarda en realizar la búsqueda mediante una función de Kotlin, retorna una lista con las personas filtradas
  */
-fun tiempo_Busqueda_Kotlin(nombre: String, lista: MutableList<Persona>): List<Persona> {
-    var resultado: List<Persona>
+fun tiempo_Busqueda_Kotlin(nombre: String, lista: MutableList<People>): List<People> {
+    var resultado: List<People>
     tiempo = measureNanoTime {
         resultado = busqueda_Kotlin(nombre, lista)!!
     }
@@ -53,8 +54,8 @@ fun tiempo_Busqueda_Kotlin(nombre: String, lista: MutableList<Persona>): List<Pe
 /**
  * Método de Búsqueda Lineal - Recorre la MutableList elemento por elemento hasta encontrar a la persona que coincida con el nombre registrado
  */
-fun busqueda_Lineal(nombre: String, lista: MutableList<Persona>): Persona? {
-    var persona: Persona? = null
+fun busqueda_Lineal(nombre: String, lista: MutableList<People>): People? {
+    var persona: People? = null
     for ((i, valor) in lista.withIndex()) {
         if (valor.nombre == nombre) {
             persona = valor
@@ -68,7 +69,7 @@ fun busqueda_Lineal(nombre: String, lista: MutableList<Persona>): Persona? {
 /**
  * Método de Búsqueda Binaria - Recorre la MutableList utilizando tres indicadores(inferior, centro y superior) para agilizar la búsqueda
  */
-fun busqueda_Binaria(nombre: String, lista: MutableList<Persona>): Persona? {
+fun busqueda_Binaria(nombre: String, lista: MutableList<People>): People? {
     var n = lista.size
     var inferior = 0
     var centro = 0
@@ -91,7 +92,7 @@ fun busqueda_Binaria(nombre: String, lista: MutableList<Persona>): Persona? {
 /**
  * Método de Búsqueda Kotlin - Realiza el filtrado de los datos mediante el uso de una función nativa de kotlin
  */
-fun busqueda_Kotlin(nombre: String, lista: MutableList<Persona>): List<Persona> =
+fun busqueda_Kotlin(nombre: String, lista: MutableList<People>): List<People> =
     lista.filter {
         it.nombre.contains(nombre)
     }

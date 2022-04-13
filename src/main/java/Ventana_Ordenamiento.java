@@ -5,8 +5,6 @@ import Kotlin.Metodos_DeOrdenamientoKt;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Clase Ventana de Ordenamiento, se realiza el ordenamiento de datos a través de diferentes métodos con el fin de comparar
@@ -63,7 +61,7 @@ public class Ventana_Ordenamiento {
      */
     public Ventana_Ordenamiento(RFirebase f) {
         // Inicialización de Componentes
-        //inicializar_Datos(estado);
+        //inicializarDatos(estado);
         loadTableData();
         agrupar_RadioButton();
         crudf = f;
@@ -73,18 +71,14 @@ public class Ventana_Ordenamiento {
 
 
     private void readFirebase(boolean key){
-        if (crudf.changeContenido(key, modelo)) {
-            System.out.println("No hubo errores");
-        } else{
-            System.err.println("ERROR");
-        }
+        lista.setLista(crudf.changeContenido(key));
     }
 
     private void eventsButtons(){
         // ActionListener del botón Quicksort
         quicksort.addActionListener(e -> {
             reiniciar_ValoresDeOrdenamiento();
-            Lista list = new Lista(estado);
+            Lista list = new Lista();
             list.setLista(Metodos_DeOrdenamientoKt.tiempo_Quicksort(list.getLista()));
             tiempo_Ejecucion = Metodos_DeOrdenamientoKt.getTiempo();
             realizar_Ordenamiento(list);
@@ -94,7 +88,7 @@ public class Ventana_Ordenamiento {
         // ActionListener del botón Bubblesort
         bubblesort.addActionListener(e -> {
             reiniciar_ValoresDeOrdenamiento();
-            Lista list = new Lista(estado);
+            Lista list = new Lista();
             list.setLista(Metodos_DeOrdenamientoKt.tiempo_Bubblesort(list.getLista()));
             tiempo_Ejecucion = Metodos_DeOrdenamientoKt.getTiempo();
             realizar_Ordenamiento(list);
@@ -104,7 +98,7 @@ public class Ventana_Ordenamiento {
         // ActionListener del botón Shellsort
         shellsort.addActionListener(e -> {
             reiniciar_ValoresDeOrdenamiento();
-            Lista list = new Lista(estado);
+            Lista list = new Lista();
             list.setLista(Metodos_DeOrdenamientoKt.tiempo_Shellsort(list.getLista()));
             tiempo_Ejecucion = Metodos_DeOrdenamientoKt.getTiempo();
             realizar_Ordenamiento(list);
@@ -114,7 +108,7 @@ public class Ventana_Ordenamiento {
         // ActionListener del botón Mergesort
         mergesort.addActionListener(e -> {
             reiniciar_ValoresDeOrdenamiento();
-            Lista list = new Lista(estado);
+            Lista list = new Lista();
             list.setLista(Metodos_DeOrdenamientoKt.tiempo_Mergesort(list.getLista()));
             tiempo_Ejecucion = Metodos_DeOrdenamientoKt.getTiempo();
             realizar_Ordenamiento(list);
@@ -152,8 +146,8 @@ public class Ventana_Ordenamiento {
     private void actualizacion_RangoDeDatos(Boolean b) {
         reiniciar_ValoresDeTablaPrincipal();
         reiniciar_ValoresDeOrdenamiento();
-        Lista list = new Lista(b);
-        inicializar_Datos(list);
+        Lista list = new Lista();
+        inicializarDatos(list);
     }
 
     /**
@@ -161,10 +155,10 @@ public class Ventana_Ordenamiento {
      *
      * @param list Lista de la que se obtendrá su MutableList
      */
-    private void inicializar_Datos(Lista list) {
+    private void inicializarDatos(Lista list) {
         for (int i = 0; i < list.getLista().size(); i++) {
             Object[] temp = {list.getLista().get(i).getNombre(),
-                    list.getLista().get(i).getNumero_Compras(),
+                    list.getLista().get(i).getCompras(),
                     list.getLista().get(i).getCategoria(),
                     list.getLista().get(i).getCorreo()};
             modelo.addRow(temp);
@@ -176,9 +170,9 @@ public class Ventana_Ordenamiento {
      *
      * @param bandera Indica el tipo de lista a generar
      */
-    private void inicializar_Datos(Boolean bandera) {
-        lista = new Lista(bandera);
-        inicializar_Datos(lista);
+    private void inicializarDatos(Boolean bandera) {
+        lista = new Lista();
+        inicializarDatos(lista);
     }
 
     /**
@@ -216,7 +210,7 @@ public class Ventana_Ordenamiento {
     private void realizar_Ordenamiento(Lista list) {
         for (int i = 0; i < list.getLista().size(); i++) {
             Object[] temp = {list.getLista().get(i).getNombre(),
-                    list.getLista().get(i).getNumero_Compras(),
+                    list.getLista().get(i).getCompras(),
                     list.getLista().get(i).getCategoria(),
                     list.getLista().get(i).getCorreo()};
             modelo_DatosOrdenados.addRow(temp);

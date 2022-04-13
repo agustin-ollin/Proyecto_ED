@@ -10,8 +10,8 @@ var tiempo = 0L
 /**
  * Método para calcular el tiempo que se tarda en ejecutar el ordenamiento de los datos de una MutableList mediante Quicksort
  */
-fun tiempo_Quicksort(lista: MutableList<Persona>): MutableList<Persona> {
-    var resultado: MutableList<Persona>
+fun tiempo_Quicksort(lista: MutableList<People>): MutableList<People> {
+    var resultado: MutableList<People>
     tiempo = measureNanoTime {
         resultado = Quicksort(lista)
     }
@@ -22,8 +22,8 @@ fun tiempo_Quicksort(lista: MutableList<Persona>): MutableList<Persona> {
 /**
  * Método para calcular el tiempo que se tarda en ejecutar el ordenamiento de los datos de una MutableList mediante Bubblesort
  */
-fun tiempo_Bubblesort(lista: MutableList<Persona>): MutableList<Persona> {
-    var resultado: MutableList<Persona>
+fun tiempo_Bubblesort(lista: MutableList<People>): MutableList<People> {
+    var resultado: MutableList<People>
     tiempo = measureNanoTime {
         resultado = Bubblesort(lista)
     }
@@ -34,8 +34,8 @@ fun tiempo_Bubblesort(lista: MutableList<Persona>): MutableList<Persona> {
 /**
  * Método para calcular el tiempo que se tarda en ejecutar el ordenamiento de los datos de una MutableList mediante Shellsort
  */
-fun tiempo_Shellsort(lista: MutableList<Persona>): MutableList<Persona> {
-    var resultado: MutableList<Persona>
+fun tiempo_Shellsort(lista: MutableList<People>): MutableList<People> {
+    var resultado: MutableList<People>
     tiempo = measureNanoTime {
         resultado = Shellsort(lista)
     }
@@ -46,8 +46,8 @@ fun tiempo_Shellsort(lista: MutableList<Persona>): MutableList<Persona> {
 /**
  * Método para calcular el tiempo que se tarda en ejecutar el ordenamiento de los datos de una MutableList mediante Mergesort
  */
-fun tiempo_Mergesort(lista: MutableList<Persona>): MutableList<Persona> {
-    var resultado: MutableList<Persona>
+fun tiempo_Mergesort(lista: MutableList<People>): MutableList<People> {
+    var resultado: MutableList<People>
     tiempo = measureNanoTime {
         resultado = Mergesort(lista)
     }
@@ -59,19 +59,19 @@ fun tiempo_Mergesort(lista: MutableList<Persona>): MutableList<Persona> {
 /**
  * QuickSort -> Ordenamiento Rápido
  */
-fun Quicksort(items: MutableList<Persona>): MutableList<Persona> {
+fun Quicksort(items: MutableList<People>): MutableList<People> {
     if (items.count() < 1) return items
     val pivot = items[items.count() / 2]
     val equal = items.filter { it.nombre == pivot.nombre }
     val less = items.filter { it.nombre < pivot.nombre }
     val greater = items.filter { it.nombre > pivot.nombre }
-    return (Quicksort(less.toMutableList()) + equal + Quicksort(greater.toMutableList())) as MutableList<Persona>
+    return (Quicksort(less.toMutableList()) + equal + Quicksort(greater.toMutableList())) as MutableList<People>
 }
 
 /**
  * BubbleSort -> Ordenamiento Burbuja Mejorado
  */
-fun Bubblesort(lista: MutableList<Persona>): MutableList<Persona> {
+fun Bubblesort(lista: MutableList<People>): MutableList<People> {
     var bandera = true
     for (i in 0 until lista.size - 1) {
         if (!bandera) break
@@ -92,7 +92,7 @@ fun Bubblesort(lista: MutableList<Persona>): MutableList<Persona> {
 /**
  * ShellSort -> Ordenamiento de Tipo Concha
  */
-fun Shellsort(arr: MutableList<Persona>): MutableList<Persona> {
+fun Shellsort(arr: MutableList<People>): MutableList<People> {
     val n = arr.size
     var gap = n / 2
     while (gap > 0) {
@@ -115,7 +115,7 @@ fun Shellsort(arr: MutableList<Persona>): MutableList<Persona> {
 /**
  * MergeSort -> Ordenamiento mediante combinación de listas
  */
-fun Mergesort(lista: MutableList<Persona>): MutableList<Persona> {
+fun Mergesort(lista: MutableList<People>): MutableList<People> {
     if (lista.size <= 1) {
         return lista
     }
@@ -130,10 +130,10 @@ fun Mergesort(lista: MutableList<Persona>): MutableList<Persona> {
 /**
  * Método para fusionar las listas resultantes ordenadas
  */
-fun merge(left: MutableList<Persona>, right: MutableList<Persona>): MutableList<Persona> {
+fun merge(left: MutableList<People>, right: MutableList<People>): MutableList<People> {
     var index_Left = 0
     var index_Right = 0
-    var newList: MutableList<Persona> = mutableListOf()
+    var newList: MutableList<People> = mutableListOf()
 
     while (index_Left < left.count() && index_Right < right.count()) {
         if (left[index_Left].nombre <= right[index_Right].nombre) {

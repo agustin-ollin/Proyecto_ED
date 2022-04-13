@@ -9,35 +9,29 @@ import javax.swing.JOptionPane
  * Clase Lista - Es la clase donde se cargan las MutableList con la información de las Personas
  */
 class Lista {
-    var lista: MutableList<Persona> = mutableListOf()
-        get() = field
+    var lista: MutableList<People> = mutableListOf()
+        /*get() = field
         set(value) {
             field = value
-        }
+        }*/
+
 
     // Archivos .txt con información separada por comas(,)
     val archivo: File = File("src/main/java/Kotlin/Datos/DatosClientes.txt") // -> Contiene 100 Registros
     val archivo_Mayor: File = File("src/main/java/Kotlin/Datos/DatosClientes2.txt") // -> Contiene 1500 Registros
 
     /**
-     * Constructor con un valor de tipo Boolean como Parámetro
-     */
-    constructor(valor: Boolean) {
-        cambiar_Contenido(valor)
-    }
-
-    /**
      * Constructor sin parámetro pero con valor por defecto(true)
      */
     constructor() {
-        cambiar_Contenido(true)
+
     }
 
     /**
      * Método Cargar Datos, sirve para guardar la información de un archivo en la MutableList de la clase
      */
     fun cargar_Datos(archivo: File) {
-        lista = mutableListOf()
+        /*lista = mutableListOf()
 
         try {
             var scanner = Scanner(archivo)
@@ -45,10 +39,10 @@ class Lista {
                 var linea: String = scanner.nextLine()
                 var delimitar = Scanner(linea)
                 delimitar.useDelimiter("\\s*,\\s*")
-                var persona = Persona()
+                var persona = People()
 
                 persona.nombre = delimitar.next()
-                persona.numero_Compras = delimitar.next().toInt()
+                persona.compras = delimitar.next()
                 persona.categoria = delimitar.next()
                 persona.correo = delimitar.next()
 
@@ -57,7 +51,7 @@ class Lista {
             scanner.close()
         } catch (e: FileNotFoundException) {
             JOptionPane.showMessageDialog(null, "Archivo no encontrado")
-        }
+        }*/
     }
 
     /**
