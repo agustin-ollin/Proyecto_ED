@@ -1,3 +1,4 @@
+import Kotlin.FirebaseUtils.RFirebase;
 import Kotlin.Imagenes;
 import Kotlin.Lista;
 import Kotlin.Metodos_DeOrdenamientoKt;
@@ -74,10 +75,13 @@ public class Ventana_Busqueda {
     // Atributo para determinar el tipo de lista a generar
     private boolean estado = true;
 
+    // Carga de la base de datos en Firebase
+    private static RFirebase crudf;
+
     /**
      * Método constructor para inicializar y aplicar funcionalidad a los componentes de la ventana
      */
-    public Ventana_Busqueda() {
+    public Ventana_Busqueda(RFirebase f) {
         // Inicialización de Componentes
         //inicializar_Datos();
         agrupar_RadioButton();
@@ -86,6 +90,15 @@ public class Ventana_Busqueda {
 
         tablaImportar.setModel(modeloImport);
         tabla.setModel(modelo);
+        crudf = f;
+    }
+
+    private void readFirebase(boolean key){
+        if (crudf.changeContenido(key, modelo)) {
+            System.out.println("No hubo errores");
+        } else{
+            System.err.println("ERROR");
+        }
     }
 
     /**
@@ -145,13 +158,15 @@ public class Ventana_Busqueda {
         // ActionListener para selección de 100 datos en tabla
         menor_Radio.addActionListener(e -> {
             estado = true;
-            actualizacion_RangoDeDatos(estado);
+            modelo.setRowCount(0);
+            readFirebase(estado);
         });
 
         // ActionListener para selección de 1500 datos en tabla
         mayor_Radio.addActionListener(e -> {
             estado = false;
-            actualizacion_RangoDeDatos(estado);
+            modelo.setRowCount(0);
+            readFirebase(estado);
         });
 
         // ActionListener para agregar datos a la tabla a Importar
@@ -266,9 +281,9 @@ public class Ventana_Busqueda {
      *
      * @param args Parámetros de clase
      */
-    public static void main(String[] args) {
+    public static void main(String[] args, RFirebase firebase) {
         JFrame ventana = new JFrame("Nueva Ventana");
-        ventana.setContentPane(new Ventana_Busqueda().panel);
+        ventana.setContentPane(new Ventana_Busqueda(firebase).panel);
         ventana.setUndecorated(true);
         ventana.pack();
         ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -276,18 +291,6 @@ public class Ventana_Busqueda {
         ventana.setVisible(true);
 
         generar_JMenuBar(ventana, args);
-    }
-
-    /**
-     * Método para inicializar componentes de la JTable
-     */
-    private void createUIComponents() {
-        //matriz = new Object[][]{};
-        //modelo = new DefaultTableModel(matriz, columnas);
-        //tabla = new JTable(modelo);
-
-        //tablaImportar = new JTable();
-        //tablaImportar.setModel(modeloImport);
     }
 
     /**
@@ -355,7 +358,7 @@ public class Ventana_Busqueda {
         // ActionListener para ejecutar la ventana de métodos de ordenamiento
         busqueda.addActionListener(e -> {
             ventana.setVisible(false);
-            Ventana_Ordenamiento.main(args);
+            Ventana_Ordenamiento.main(args, crudf);
         });
     }
 

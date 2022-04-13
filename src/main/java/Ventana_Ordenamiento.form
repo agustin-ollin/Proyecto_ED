@@ -25,7 +25,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="b7f04" class="javax.swing.JTable" binding="tabla_DatosDesordenados" custom-create="true">
+          <component id="b7f04" class="javax.swing.JTable" binding="tabla_DatosDesordenados">
             <constraints/>
             <properties/>
           </component>
@@ -52,7 +52,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="4a542" class="javax.swing.JTable" binding="tabla_DatosOrdenados" custom-create="true">
+          <component id="4a542" class="javax.swing.JTable" binding="tabla_DatosOrdenados">
             <constraints/>
             <properties/>
           </component>

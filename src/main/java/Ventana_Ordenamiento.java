@@ -1,3 +1,4 @@
+import Kotlin.FirebaseUtils.RFirebase;
 import Kotlin.Imagenes;
 import Kotlin.Lista;
 import Kotlin.Metodos_DeOrdenamientoKt;
@@ -37,10 +38,10 @@ public class Ventana_Ordenamiento {
     // Componentes para los JTable
     private String columnas[] = {"Nombre", "N° Compras", "Categoría", "Correo"};
     private Object[][] matriz;
-    private DefaultTableModel modelo;
+    private DefaultTableModel modelo = new DefaultTableModel(matriz, columnas);
 
     private Object[][] matriz_DatosOrdenados;
-    private DefaultTableModel modelo_DatosOrdenados;
+    private DefaultTableModel modelo_DatosOrdenados = new DefaultTableModel(matriz_DatosOrdenados, columnas);
 
     // Lista a implementar
     private Lista lista;
@@ -54,14 +55,32 @@ public class Ventana_Ordenamiento {
     // Atributo para identificar el tipo de lista a generar
     private Boolean estado = true;
 
+    // Carga de la base de datos en Firebase
+    private static RFirebase crudf;
+
     /**
      * Método constructor sin parámetros y con declaraciones internas sobre el funcionamiento de la ventana
      */
-    public Ventana_Ordenamiento() {
+    public Ventana_Ordenamiento(RFirebase f) {
         // Inicialización de Componentes
-        inicializar_Datos(estado);
+        //inicializar_Datos(estado);
+        loadTableData();
         agrupar_RadioButton();
+        crudf = f;
 
+        eventsButtons();
+    }
+
+
+    private void readFirebase(boolean key){
+        if (crudf.changeContenido(key, modelo)) {
+            System.out.println("No hubo errores");
+        } else{
+            System.err.println("ERROR");
+        }
+    }
+
+    private void eventsButtons(){
         // ActionListener del botón Quicksort
         quicksort.addActionListener(e -> {
             reiniciar_ValoresDeOrdenamiento();
@@ -105,28 +124,24 @@ public class Ventana_Ordenamiento {
         // ActionListener para la selección de lista con 100 datos
         menor_radio.addActionListener(e -> {
             estado = true;
-            actualizacion_RangoDeDatos(estado);
+            modelo.setRowCount(0);
+            readFirebase(estado);
         });
 
         // ActionListener para la selección de lista con 1500 datos
         mayor_radio.addActionListener(e -> {
             estado = false;
-            actualizacion_RangoDeDatos(estado);
+            modelo.setRowCount(0);
+            readFirebase(estado);
         });
     }
 
     /**
      * Método para inicializar componentes en las JTables
      */
-    private void createUIComponents() {
-        matriz = new Object[][]{};
-        modelo = new DefaultTableModel(matriz, columnas);
-        tabla_DatosDesordenados = new JTable(modelo);
-
-        matriz_DatosOrdenados = new Object[][]{};
-        modelo_DatosOrdenados = new DefaultTableModel(matriz_DatosOrdenados, columnas);
-        tabla_DatosOrdenados = new JTable(modelo_DatosOrdenados);
-
+    private void loadTableData() {
+        tabla_DatosDesordenados.setModel(modelo);
+        tabla_DatosOrdenados.setModel(modelo_DatosOrdenados);
     }
 
     /**
@@ -213,9 +228,9 @@ public class Ventana_Ordenamiento {
      *
      * @param args Parámetros de clase
      */
-    public static void main(String[] args) {
+    public static void main(String[] args, RFirebase firebase) {
         JFrame ventana = new JFrame("Nueva Ventana");
-        ventana.setContentPane(new Ventana_Ordenamiento().panel);
+        ventana.setContentPane(new Ventana_Ordenamiento(firebase).panel);
         ventana.setUndecorated(true);
         ventana.pack();
         ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -256,7 +271,7 @@ public class Ventana_Ordenamiento {
         // ActionListener para ir a la ventana de búsqueda
         busqueda.addActionListener(e -> {
             ventana.setVisible(false);
-            Ventana_Busqueda.main(args);
+            Ventana_Busqueda.main(args, crudf);
         });
     }
 }

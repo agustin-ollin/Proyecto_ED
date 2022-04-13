@@ -1,5 +1,6 @@
 package Kotlin.FirebaseUtils
 
+import Kotlin.Models.Collections
 import com.google.cloud.firestore.Firestore
 import java.util.concurrent.ExecutionException
 import javax.swing.table.DefaultTableModel
@@ -9,9 +10,23 @@ class RFirebase {
     private var bd: Firestore? = null
     private var key = false
 
-    fun CRUDFirebase() {
+    constructor(){
         val connectionFirebase = FirebaseConnection()
         bd = connectionFirebase.init()
+    }
+
+    /**
+     * Método Cambiar Contenido, sirve para decidir la colección que será cargada
+     */
+    fun changeContenido(bandera: Boolean, model: DefaultTableModel): Boolean{
+        var key = false
+        if (bandera) {
+            key = readFirebase(model, Collections.DATAONE.collect)
+        } else {
+            key = readFirebase(model, Collections.DATAALL.collect)
+        }
+
+        return key
     }
 
     fun readFirebase(model: DefaultTableModel, collect: String): Boolean {

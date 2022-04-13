@@ -1,3 +1,4 @@
+import Kotlin.FirebaseUtils.RFirebase;
 import Kotlin.Imagenes;
 
 import javax.swing.*;
@@ -15,7 +16,7 @@ public class Main extends JFrame {
     private JButton button_Busqueda = new JButton();
     private JLabel etiqueta_Orden = new JLabel("Ordenamiento");
     private JLabel etiqueta_Busqueda = new JLabel("Búsqueda");
-
+    private RFirebase firebase;
     /**
      * Método constructor con la inicialización de todos los componentes de la ventana
      */
@@ -34,6 +35,8 @@ public class Main extends JFrame {
         componentes_DelPanel();
         agregar_Imagenes();
         eventos();
+
+        firebase = new RFirebase();
     }
 
     /**
@@ -85,14 +88,14 @@ public class Main extends JFrame {
         button_Ordenamiento.addActionListener(e -> {
             String[] args = new String[0];
             setVisible(false);
-            Ventana_Ordenamiento.main(args);
+            Ventana_Ordenamiento.main(args, firebase);
         });
 
         // Botón para ir a la ventana de métodos de búsqueda
         button_Busqueda.addActionListener(e -> {
             String[] args = new String[0];
             setVisible(false);
-            Ventana_Busqueda.main(args);
+            Ventana_Busqueda.main(args, firebase);
         });
     }
 
