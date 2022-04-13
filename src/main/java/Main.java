@@ -16,7 +16,9 @@ public class Main extends JFrame {
     private JButton button_Busqueda = new JButton();
     private JLabel etiqueta_Orden = new JLabel("Ordenamiento");
     private JLabel etiqueta_Busqueda = new JLabel("Búsqueda");
-    private RFirebase firebase = new RFirebase();;
+    private RFirebase firebase = new RFirebase();
+    ;
+
     /**
      * Método constructor con la inicialización de todos los componentes de la ventana
      */

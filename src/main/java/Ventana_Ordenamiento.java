@@ -2,9 +2,14 @@ import Kotlin.FirebaseUtils.RFirebase;
 import Kotlin.Imagenes;
 import Kotlin.Lista;
 import Kotlin.Metodos_DeOrdenamientoKt;
+import Kotlin.People;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clase Ventana de Ordenamiento, se realiza el ordenamiento de datos a través de diferentes métodos con el fin de comparar
@@ -42,7 +47,7 @@ public class Ventana_Ordenamiento {
     private DefaultTableModel modelo_DatosOrdenados = new DefaultTableModel(matriz_DatosOrdenados, columnas);
 
     // Lista a implementar
-    private Lista lista;
+    private Lista lista = new Lista();
 
     // Grupo de Radio Botones
     private ButtonGroup grupo_RadioButton = new ButtonGroup();
@@ -61,57 +66,61 @@ public class Ventana_Ordenamiento {
      */
     public Ventana_Ordenamiento(RFirebase f) {
         // Inicialización de Componentes
-        //inicializarDatos(estado);
+        mayor_radio.setSelected(false);
+        menor_radio.setSelected(false);
         loadTableData();
         agrupar_RadioButton();
-        crudf = f;
-
         eventsButtons();
+        crudf = f;
     }
 
-
-    private void readFirebase(boolean key){
+    /**
+     * Método para cargar los datos de Firestore
+     *
+     * @param key Valor boolean para seleccionar la colección a cargar
+     */
+    private void readFirebase(boolean key) {
         lista.setLista(crudf.changeContenido(key));
+        inicializarDatos(lista);
     }
 
-    private void eventsButtons(){
+    /**
+     * Método para realizar los eventos de JButton y RadioButton
+     */
+    private void eventsButtons() {
         // ActionListener del botón Quicksort
         quicksort.addActionListener(e -> {
             reiniciar_ValoresDeOrdenamiento();
-            Lista list = new Lista();
-            list.setLista(Metodos_DeOrdenamientoKt.tiempo_Quicksort(list.getLista()));
+            lista.setLista(Metodos_DeOrdenamientoKt.tiempo_Quicksort(lista.getLista()));
             tiempo_Ejecucion = Metodos_DeOrdenamientoKt.getTiempo();
-            realizar_Ordenamiento(list);
+            realizar_Ordenamiento(lista);
             tiempo.setText(tiempo_Ejecucion.toString());
         });
 
         // ActionListener del botón Bubblesort
         bubblesort.addActionListener(e -> {
             reiniciar_ValoresDeOrdenamiento();
-            Lista list = new Lista();
-            list.setLista(Metodos_DeOrdenamientoKt.tiempo_Bubblesort(list.getLista()));
+            lista.setLista(Metodos_DeOrdenamientoKt.tiempo_Bubblesort(lista.getLista()));
             tiempo_Ejecucion = Metodos_DeOrdenamientoKt.getTiempo();
-            realizar_Ordenamiento(list);
+            realizar_Ordenamiento(lista);
             tiempo.setText(tiempo_Ejecucion.toString());
         });
 
         // ActionListener del botón Shellsort
         shellsort.addActionListener(e -> {
             reiniciar_ValoresDeOrdenamiento();
-            Lista list = new Lista();
-            list.setLista(Metodos_DeOrdenamientoKt.tiempo_Shellsort(list.getLista()));
+            lista.setLista(Metodos_DeOrdenamientoKt.tiempo_Shellsort(lista.getLista()));
             tiempo_Ejecucion = Metodos_DeOrdenamientoKt.getTiempo();
-            realizar_Ordenamiento(list);
+            realizar_Ordenamiento(lista);
             tiempo.setText(tiempo_Ejecucion.toString());
         });
 
         // ActionListener del botón Mergesort
         mergesort.addActionListener(e -> {
             reiniciar_ValoresDeOrdenamiento();
-            Lista list = new Lista();
-            list.setLista(Metodos_DeOrdenamientoKt.tiempo_Mergesort(list.getLista()));
+            lista.setLista(Metodos_DeOrdenamientoKt.tiempo_Mergesort(lista.getLista()));
             tiempo_Ejecucion = Metodos_DeOrdenamientoKt.getTiempo();
-            realizar_Ordenamiento(list);
+            realizar_Ordenamiento(lista);
             tiempo.setText(tiempo_Ejecucion.toString());
         });
 
@@ -119,6 +128,7 @@ public class Ventana_Ordenamiento {
         menor_radio.addActionListener(e -> {
             estado = true;
             modelo.setRowCount(0);
+            modelo_DatosOrdenados.setRowCount(0);
             readFirebase(estado);
         });
 
@@ -126,6 +136,7 @@ public class Ventana_Ordenamiento {
         mayor_radio.addActionListener(e -> {
             estado = false;
             modelo.setRowCount(0);
+            modelo_DatosOrdenados.setRowCount(0);
             readFirebase(estado);
         });
     }
@@ -139,23 +150,11 @@ public class Ventana_Ordenamiento {
     }
 
     /**
-     * Método para reiniciar datos de tablas y listas
-     *
-     * @param b Indica el tipo de lista a generar
-     */
-    private void actualizacion_RangoDeDatos(Boolean b) {
-        reiniciar_ValoresDeTablaPrincipal();
-        reiniciar_ValoresDeOrdenamiento();
-        Lista list = new Lista();
-        inicializarDatos(list);
-    }
-
-    /**
      * Carga los datos de una lista en la tabla con los datos desordenados
      *
      * @param list Lista de la que se obtendrá su MutableList
      */
-    private void inicializarDatos(Lista list) {
+    private void inicializarDatos(@NotNull Lista list) {
         for (int i = 0; i < list.getLista().size(); i++) {
             Object[] temp = {list.getLista().get(i).getNombre(),
                     list.getLista().get(i).getCompras(),
@@ -163,16 +162,6 @@ public class Ventana_Ordenamiento {
                     list.getLista().get(i).getCorreo()};
             modelo.addRow(temp);
         }
-    }
-
-    /**
-     * Método para inicializar los datos de la tabla principal instanciando una nueva lista
-     *
-     * @param bandera Indica el tipo de lista a generar
-     */
-    private void inicializarDatos(Boolean bandera) {
-        lista = new Lista();
-        inicializarDatos(lista);
     }
 
     /**
@@ -187,19 +176,25 @@ public class Ventana_Ordenamiento {
      * Método para reiniciar la tabla de datos ordenados
      */
     private void reiniciar_ValoresDeOrdenamiento() {
-        modelo_DatosOrdenados = new DefaultTableModel(matriz_DatosOrdenados, columnas);
-        tabla_DatosOrdenados.setModel(modelo_DatosOrdenados);
+        modelo_DatosOrdenados.setRowCount(0);
         tiempo_Ejecucion = 0L;
+        lista.setLista(cargarTablaALista());
     }
 
     /**
-     * Método para limpiar la tabla de datos desordenados
+     * Método para cargar los datos de la tabla a la lista
+     *
+     * @return
      */
-    private void reiniciar_ValoresDeTablaPrincipal() {
-        modelo = new DefaultTableModel(matriz, columnas);
-        tabla_DatosDesordenados.setModel(modelo);
-        tiempo_Ejecucion = 0L;
-        tiempo.setText(tiempo_Ejecucion.toString());
+    private ArrayList<People> cargarTablaALista() {
+        int row = tabla_DatosDesordenados.getRowCount();
+        ArrayList<People> list = new ArrayList<People>();
+        for (int i = 0; i < row; i++) {
+            People p = new People(tabla_DatosDesordenados.getValueAt(i, 0).toString(), tabla_DatosDesordenados.getValueAt(i, 1).toString(), tabla_DatosDesordenados.getValueAt(i, 2).toString(), tabla_DatosDesordenados.getValueAt(i, 3).toString());
+            list.add(p);
+        }
+
+        return list;
     }
 
     /**

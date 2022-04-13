@@ -56,7 +56,8 @@ public class Ventana_Busqueda {
 
     // Componentes para la JTable
     private String columnas[] = {"Nombre", "N° Compras", "Categoría", "Correo"};
-    private Object[][] matriz = new Object[][]{};;
+    private Object[][] matriz = new Object[][]{};
+    ;
     private DefaultTableModel modelo = new DefaultTableModel(matriz, columnas);
 
     // Componentes para JTable para datos a importar
@@ -81,7 +82,6 @@ public class Ventana_Busqueda {
      */
     public Ventana_Busqueda(RFirebase f) {
         // Inicialización de Componentes
-        //inicializar_Datos();
         agrupar_RadioButton();
         agregarComboBox();
         eventosButtons();
@@ -93,9 +93,10 @@ public class Ventana_Busqueda {
 
     /**
      * Método para cargar los datos de Firestore
-     * @param key
+     *
+     * @param key Valor boolean para seleccionar la colección a cargar
      */
-    private void readFirebase(boolean key){
+    private void readFirebase(boolean key) {
 
         lista.setLista(crudf.changeContenido(key));
         lista.setLista(Metodos_DeOrdenamientoKt.tiempo_Quicksort(lista.getLista()));
@@ -105,7 +106,7 @@ public class Ventana_Busqueda {
     /**
      * Método para limpiar la interfaz gráfica
      */
-    private void limpiarInterfaz(){
+    private void limpiarInterfaz() {
         tiempo.setText("0");
         posicion.setText("0");
         buscar_TextField.setText("");
@@ -172,17 +173,17 @@ public class Ventana_Busqueda {
 
         // ActionListener para agregar datos a la tabla a Importar
         guardarButton.addActionListener(e -> {
-            if (!textField_Nombre.getText().equals("") && !textField_Correo.getText().equals("") && !textField_Categoria.getText().equals("") && !textField_Compras.getText().equals("")){
+            if (!textField_Nombre.getText().equals("") && !textField_Correo.getText().equals("") && !textField_Categoria.getText().equals("") && !textField_Compras.getText().equals("")) {
                 insertarEnJTable();
                 limpiarInterfaz();
-            } else{
+            } else {
                 generar_MensajesError("Realice primero la búsqueda de datos");
             }
         });
 
         // ActionListener para exportar los datos a un archivo
         exportarButton.addActionListener(e -> {
-            if (tablaImportar.getRowCount() != 0 && !textFieldNombreArchivo.getText().equals("")){
+            if (tablaImportar.getRowCount() != 0 && !textFieldNombreArchivo.getText().equals("")) {
                 importarArchivo();
                 limpiarInterfaz();
                 modeloImport.setRowCount(0);
@@ -195,26 +196,27 @@ public class Ventana_Busqueda {
     /**
      * Método para importar datos a un archivo
      */
-    private void importarArchivo(){
+    private void importarArchivo() {
         String contenido = obtenerDatosDeJTable();
-        ArchivoKt.crearArchivo(contenido ,textFieldNombreArchivo.getText(), extensionCmboBox.getSelectedItem().toString());
+        ArchivoKt.crearArchivo(contenido, textFieldNombreArchivo.getText(), extensionCmboBox.getSelectedItem().toString());
         JOptionPane.showMessageDialog(null, "Los datos se cargaron correctamente", "INFORMACIÓN", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
      * Método para obtener el contenido de una JTable y guardarlo en un String
+     *
      * @return
      */
-    private String obtenerDatosDeJTable(){
+    private String obtenerDatosDeJTable() {
         int row = tablaImportar.getRowCount();
         String contenido = "--------------------------------------------------";
 
         for (int i = 0; i < row; i++) {
             contenido += "\nPosición: " + tablaImportar.getValueAt(i, 0).toString() +
-                    "\nTiempo de Búsqueda: " + tablaImportar.getValueAt(i, 1).toString()+
-                    "\nNombre: " + tablaImportar.getValueAt(i, 2).toString()+
-                    "\nN° Compras: " + tablaImportar.getValueAt(i, 3).toString()+
-                    "\nCategoría: " + tablaImportar.getValueAt(i, 4).toString()+
+                    "\nTiempo de Búsqueda: " + tablaImportar.getValueAt(i, 1).toString() +
+                    "\nNombre: " + tablaImportar.getValueAt(i, 2).toString() +
+                    "\nN° Compras: " + tablaImportar.getValueAt(i, 3).toString() +
+                    "\nCategoría: " + tablaImportar.getValueAt(i, 4).toString() +
                     "\nCorreo: " + tablaImportar.getValueAt(i, 5).toString() +
                     "\n--------------------------------------------------";
         }
