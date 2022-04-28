@@ -1,7 +1,6 @@
 package Kotlin.Operaciones
 
 import Kotlin.People
-import Kotlin.Persona
 import kotlin.system.measureNanoTime
 
 /**

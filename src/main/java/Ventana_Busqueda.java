@@ -1,5 +1,6 @@
 import Kotlin.*;
 import Kotlin.FirebaseUtils.RFirebase;
+import Kotlin.Models.DataPeople;
 import Kotlin.Operaciones.ArchivoKt;
 import Kotlin.Operaciones.Metodos_DeBusquedaKt;
 import org.jetbrains.annotations.NotNull;
@@ -8,6 +9,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,7 +68,7 @@ public class Ventana_Busqueda {
     private DefaultTableModel modeloImport = new DefaultTableModel(matrizImport, columnasImport);
 
     // Componente para ComboBox
-    private String extensiones[] = {".txt"};
+    private String extensiones[] = {".txt",".csv"};
 
     // Lista a implementar
     private Lista lista = new Lista();
@@ -197,9 +199,20 @@ public class Ventana_Busqueda {
      * Método para importar datos a un archivo
      */
     private void importarArchivo() {
-        String contenido = obtenerDatosDeJTable();
-        ArchivoKt.crearArchivo(contenido, textFieldNombreArchivo.getText(), extensionCmboBox.getSelectedItem().toString());
-        JOptionPane.showMessageDialog(null, "Los datos se cargaron correctamente", "INFORMACIÓN", JOptionPane.INFORMATION_MESSAGE);
+        switch (extensionCmboBox.getSelectedItem().toString()){
+            case ".txt":{
+                String contenido = obtenerDatosDeJTable();
+                ArchivoKt.crearArchivo(contenido, textFieldNombreArchivo.getText(), extensionCmboBox.getSelectedItem().toString());
+                JOptionPane.showMessageDialog(null, "Los datos se cargaron correctamente", "INFORMACIÓN", JOptionPane.INFORMATION_MESSAGE);
+            }
+            break;
+            case ".csv":{
+                ArchivoKt.crearArchivoCSV(obtenerDatosDeJTableAList(), textFieldNombreArchivo.getText(), extensionCmboBox.getSelectedItem().toString());
+                JOptionPane.showMessageDialog(null, "Los datos se cargaron correctamente", "INFORMACIÓN", JOptionPane.INFORMATION_MESSAGE);
+                ArchivoKt.leerCSV(textFieldNombreArchivo.getText() + extensionCmboBox.getSelectedItem().toString());
+            }
+            break;
+        }
     }
 
     /**
@@ -222,6 +235,25 @@ public class Ventana_Busqueda {
         }
 
         return contenido;
+    }
+
+    /**
+     * Método para guargar los datos de la tabla a importar en un ArrayList de DataPeople
+     * @return ArrayList
+     */
+    private ArrayList<DataPeople> obtenerDatosDeJTableAList(){
+        ArrayList<DataPeople> list = new ArrayList<DataPeople>();
+
+        int row = tablaImportar.getRowCount();
+        for (int i = 0; i < row; i++) {
+            DataPeople dp = new DataPeople(tablaImportar.getValueAt(i, 0).toString(), tablaImportar.getValueAt(i, 1).toString()
+                    , tablaImportar.getValueAt(i, 2).toString(), tablaImportar.getValueAt(i, 3).toString(),
+                    tablaImportar.getValueAt(i, 4).toString(), tablaImportar.getValueAt(i, 5).toString());
+
+            list.add(dp);
+        }
+
+        return list;
     }
 
     /**
