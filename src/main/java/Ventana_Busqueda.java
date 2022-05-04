@@ -213,7 +213,8 @@ public class Ventana_Busqueda {
             }
             break;
             case ".xml":{
-
+                ArchivoKt.crearArchivoXML(obtenerDatosDeJTableAList(), textFieldNombreArchivo.getText(), extensionCmboBox.getSelectedItem().toString());
+                JOptionPane.showMessageDialog(null, "Los datos se cargaron correctamente", "INFORMACIÓN", JOptionPane.INFORMATION_MESSAGE);
             }
             break;
         }
