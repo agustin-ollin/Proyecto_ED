@@ -1,5 +1,8 @@
 import Kotlin.FirebaseUtils.RFirebase;
 import Kotlin.Imagenes;
+import mdlaf.MaterialLookAndFeel;
+import mdlaf.themes.JMarsDarkTheme;
+import mdlaf.themes.MaterialOceanicTheme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -105,6 +108,11 @@ public class Main extends JFrame {
      * @param args Argumentos de la clase
      */
     public static void main(String[] args) {
+        try{
+            UIManager.setLookAndFeel(new MaterialLookAndFeel(new JMarsDarkTheme()));
+        }catch (UnsupportedLookAndFeelException e){
+            System.out.println(e.getMessage());
+        }
         Main ventana = new Main();
     }
 }

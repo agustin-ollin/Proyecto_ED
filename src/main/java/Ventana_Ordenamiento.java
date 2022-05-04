@@ -3,6 +3,7 @@ import Kotlin.Imagenes;
 import Kotlin.Lista;
 import Kotlin.Metodos_DeOrdenamientoKt;
 import Kotlin.People;
+import mdlaf.MaterialLookAndFeel;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -218,6 +219,7 @@ public class Ventana_Ordenamiento {
      * @param args Parámetros de clase
      */
     public static void main(String[] args, RFirebase firebase) {
+
         JFrame ventana = new JFrame("Nueva Ventana");
         ventana.setContentPane(new Ventana_Ordenamiento(firebase).panel);
         ventana.setUndecorated(true);
