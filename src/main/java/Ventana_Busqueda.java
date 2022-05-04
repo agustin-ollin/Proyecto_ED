@@ -68,7 +68,7 @@ public class Ventana_Busqueda {
     private DefaultTableModel modeloImport = new DefaultTableModel(matrizImport, columnasImport);
 
     // Componente para ComboBox
-    private String extensiones[] = {".txt",".csv"};
+    private String extensiones[] = {".txt",".csv",".xml"};
 
     // Lista a implementar
     private Lista lista = new Lista();
@@ -210,6 +210,10 @@ public class Ventana_Busqueda {
                 ArchivoKt.crearArchivoCSV(obtenerDatosDeJTableAList(), textFieldNombreArchivo.getText(), extensionCmboBox.getSelectedItem().toString());
                 JOptionPane.showMessageDialog(null, "Los datos se cargaron correctamente", "INFORMACIÓN", JOptionPane.INFORMATION_MESSAGE);
                 ArchivoKt.leerCSV(textFieldNombreArchivo.getText() + extensionCmboBox.getSelectedItem().toString());
+            }
+            break;
+            case ".xml":{
+
             }
             break;
         }

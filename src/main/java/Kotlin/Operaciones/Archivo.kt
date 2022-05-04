@@ -48,4 +48,17 @@ fun leerCSV(nombreArchivo: String){
         println(list[i]["Posición"] + ":" + list[i]["Tiempo"] + ":" + list[i]["Nombre"] + ":" + list[i]["Cantidad Compras"] + ":" + list[i]["Categoría"] + ":" + list[i]["Correo"])
     }
 
+    /**
+     * Función para crear archivo CSV
+     */
+    fun crearXML(){
+
+    }
+
+    /**
+     * Función para leer archivo XML
+     */
+    fun leerXML(){
+
+    }
 }
